@@ -32,12 +32,14 @@ while True:
     answer = input('what to do (start_pump(P1,G1,1\n), stop_pump(P1,G1,0\n), flow(P1,S3,XXXXX\n), query_pressure(P1,Q2\n), return(), or set_pressure(P1,S6,mmm.nnn\n)) : ') 
     if answer == 'P1,G1,1\n':
         # TODO
-        print('开泵\n')
-        data = ser.read(10)  # 读取10个字节
+        ser.write('P1,G1,1\n'.encode("ASCII"))
+        data = ser.read(10) # 读取10个字节
+        print(f'开泵\n response: {data}\n')  
     elif answer == 'P1,G1,0\n':
         # TODO
-        print('关泵\n')
+        ser.write('P1,G1,0\n'.encode("ASCII"))
         data = ser.read(10)  # 读取10个字节
+        print(f'关泵\n respnse: {data}\n')
     elif answer == 'flow':
         # TODO
         print('流量设置\n')
