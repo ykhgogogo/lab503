@@ -1,4 +1,7 @@
+from asyncio import sleep
+import binascii
 import sys
+import time
 import serial
 
 # 创建一个串行端口对象
@@ -9,7 +12,7 @@ ser = serial.Serial()
 
 # 设置串行端口的参数
 try:
-    ser = serial.Serial('COM1', 9600)
+    ser = serial.Serial('COM4', 9600)
 except serial.SerialException as e:
     print(f"参数设置有误 {e}\n")
 # ser.port = 'COM1'  # 串行端口名称，根据实际情况修改
@@ -20,7 +23,7 @@ except serial.SerialException as e:
 
 # 打开串行端口 同时异常排查
 try:
-    ser.open()
+    # ser.open()
     print(f"RS232成功打开 和 {ser.port} 建立连接\n")
 except serial.SerialException as e:
     print(f"无法通过RS232打开端口: {e}\n")
@@ -28,18 +31,21 @@ except serial.SerialException as e:
 
 # 字符串匹配命令
 while True:
+    time.sleep(1)
     # 按照提示输入参数
-    answer = input('what to do (start_pump(P1,G1,1\n), stop_pump(P1,G1,0\n), flow(P1,S3,XXXXX\n), query_pressure(P1,Q2\n), return(), or set_pressure(P1,S6,mmm.nnn\n)) : ') 
-    if answer == 'P1,G1,1\n':
+    answer = input('what to do (start_pump(P1,G1,1\n), stop_pump(P1,G1,0\n), flow(P1,S3,XXXXX\n), query_pressure(P1,Q2\n), return(), or set_pressure(P1,S6,mmm.nnn\n)) : \n') 
+    if answer == 'P1,G1,1':
         # TODO
-        ser.write('P1,G1,1\n'.encode("ASCII"))
+        s = ser.write("P1,G1,1\r\n".encode('utf-8'))
+        print(s)
         data = ser.read(10) # 读取10个字节
-        print(f'开泵\n response: {data}\n')  
-    elif answer == 'P1,G1,0\n':
+        print(f'开泵\n response: {data}\n') 
+        break 
+    elif answer == 'P1,G1,0':
         # TODO
-        ser.write('P1,G1,0\n'.encode("ASCII"))
+        ser.write('P1,G1,0\r\n'.encode("utf-8"))
         data = ser.read(10)  # 读取10个字节
-        print(f'关泵\n respnse: {data}\n')
+        print(f'关泵 respnse: {data}\n')
     elif answer == 'flow':
         # TODO
         print('流量设置\n')
