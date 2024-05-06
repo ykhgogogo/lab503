@@ -5,12 +5,6 @@ import serial.tools.list_ports
 
 from pumpi import Pumpi
 
-def operate_ser(ser):
-    while True:
-        print('请输入命令：(按照P1,G1,1的格式输入)')
-        input_command = input()
-        ser.write(input_command.encode('utf-8'))
-
 def main():
     print("Hello World!")
     
